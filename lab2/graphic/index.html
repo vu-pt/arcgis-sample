@@ -1,0 +1,337 @@
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="initial-scale=1,maximum-scale=1,user-scalable=no"
+    />
+  
+<title>Starter app in 3D - 4.29</title>
+
+    <link
+      rel="stylesheet"
+      href="https://js.arcgis.com/4.29/esri/themes/light/main.css"
+    />
+    <script src="https://js.arcgis.com/4.29/"></script>
+
+    <style>
+      html,
+      body,
+      #viewDiv {
+        padding: 0;
+        margin: 0;
+        height: 100%;
+        width: 100%;
+      }
+
+    </style>
+    <script>
+	let popup_template = {
+					title: "{Name}",
+					content: "This {type} at <b>{Location}</b>."
+				};
+	let jsondata = {
+		points: [
+			{
+				type: "point",
+				x: 106.79572122639568, 
+				y: 10.872012825179635,
+				z: 1010,
+				symbol: {
+					type: "simple-marker",
+					color: [226, 119, 40],
+					outline: {
+						color: [255, 255, 255],
+						width: 2
+					}
+				},
+				Name: "Point 01",
+				Location: "location point 01",
+				popupTemplate: popup_template
+			}
+		],
+		lines: [
+			{
+				type: "polyline",
+				paths: [
+					[106.79406898564247, 10.873045377243152, 700],
+					[106.79572122639568, 10.872012825179635, 1010]
+				],
+				symbol: {
+					type: "simple-line",
+					color: [226, 119, 40],
+					width: 2
+				},
+				Name: "line 01",
+				Location: "location line 01",
+				popupTemplate: popup_template
+			},
+			{
+				type: "polyline",
+				paths: [
+					[106.79404752797036, 10.871085632526057, 700],
+					[106.79572122639568, 10.872012825179635, 1010]
+				],
+				symbol: {
+					type: "simple-line",
+					color: [226, 119, 40],
+					width: 2
+				},
+				Name: "line 02",
+				Location: "location line 02",
+				popupTemplate: popup_template
+			},
+			{
+				type: "polyline",
+				paths: [
+					[106.79745929783738, 10.871064559932258, 700],
+					[106.79572122639568, 10.872012825179635, 1010]
+				],
+				symbol: {
+					type: "simple-line",
+					color: [226, 119, 40],
+					width: 2
+				},
+				Name: "line 03",
+				Location: "location line 03",
+				popupTemplate: popup_template
+			},
+			{
+				type: "polyline",
+				paths: [
+					[106.7976738745586, 10.872834652622513, 700],
+					[106.79572122639568, 10.872012825179635, 1010]
+				],
+				symbol: {
+					type: "simple-line",
+					color: [226, 119, 40],
+					width: 2
+				},
+				Name: "line 04",
+				Location: "location line 04",
+				popupTemplate: popup_template
+			},
+			//--- ropes
+			{
+				type: "polyline",
+				paths: [
+					[106.79406898564247, 10.873045377243152, 100],
+					[106.79406898564247, 10.873045377243152, 700],
+				],
+				symbol: {
+					type: "simple-line",
+					color: [226, 119, 40],
+					width: 2
+				},
+				Name: "line 04",
+				Location: "location line 04",
+				popupTemplate: popup_template
+			},
+			{
+				type: "polyline",
+				paths: [
+					[106.79404752797036, 10.871085632526057, 100],
+					[106.79404752797036, 10.871085632526057, 700],
+				],
+				symbol: {
+					type: "simple-line",
+					color: [226, 119, 40],
+					width: 2
+				},
+				Name: "line 04",
+				Location: "location line 04",
+				popupTemplate: popup_template
+			},
+			{
+				type: "polyline",
+				paths: [
+					[106.79745929783738, 10.871064559932258, 100],
+					[106.79745929783738, 10.871064559932258, 700],
+				],
+				symbol: {
+					type: "simple-line",
+					color: [226, 119, 40],
+					width: 2
+				},
+				Name: "line 04",
+				Location: "location line 04",
+				popupTemplate: popup_template
+			},
+			{
+				type: "polyline",
+				paths: [
+					[106.7976738745586, 10.872834652622513, 100],
+					[106.7976738745586, 10.872834652622513, 700],
+				],
+				symbol: {
+					type: "simple-line",
+					color: [226, 119, 40],
+					width: 2
+				},
+				Name: "line 04",
+				Location: "location line 04",
+				popupTemplate: popup_template
+			}
+		],
+		polygons: [
+			{
+				type: "polygon",
+				rings: [
+					[106.79406898564247, 10.873045377243152, 100],
+					[106.79404752797036, 10.871085632526057, 100],
+					[106.79745929783738, 10.871064559932258, 100],
+					[106.7976738745586, 10.872834652622513, 100],
+					[106.79406898564247, 10.873045377243152, 100]
+				],
+				symbol: {
+					type: "simple-fill", 
+					color: [227, 139, 79, 0.6],
+					outline: {
+						color: [255, 255, 255],
+						width: 1
+					}
+				}
+			},
+			{
+				type: "polygon",
+				rings: [
+					[106.79406898564247, 10.873045377243152, 700],
+					[106.79404752797036, 10.871085632526057, 700],
+					[106.79745929783738, 10.871064559932258, 700],
+					[106.7976738745586, 10.872834652622513, 700],
+					[106.79406898564247, 10.873045377243152, 700]
+				],
+				symbol: {
+					type: "simple-fill", 
+					color: [0, 255, 0, 0.7],
+					outline: {
+						color: [255, 255, 255],
+						width: 1
+					}
+				}
+			},
+			{//bottom
+				type: "polygon",
+				rings: [
+					[106.80196540898253, 10.874162215247198, 100],
+					[106.80470930344951, 10.874162202995688, 100],
+					[106.80470930344951, 10.87687434163142, 100],
+					[106.80196540898253, 10.876874353882926, 100],
+					[106.80196540898253, 10.874162215247198, 100]
+				],
+				symbol: {
+					type: "simple-fill", 
+					color: [0, 255, 0, 0.7],
+					outline: {
+						color: [255, 255, 255],
+						width: 1
+					}
+				}
+			},
+			{//top
+				type: "polygon",
+				rings: [
+					[106.80196540898253, 10.874162215247198, 400],
+					[106.80470930344951, 10.874162202995688, 400],
+					[106.80470930344951, 10.87687434163142, 400],
+					[106.80196540898253, 10.876874353882926, 400],
+					[106.80196540898253, 10.874162215247198, 400]
+				],
+				symbol: {
+					type: "simple-fill", 
+					color: [0, 255, 0, 0.7],
+					outline: {
+						color: [255, 255, 255],
+						width: 1
+					}
+				}
+			},
+			{//front
+				type: "polygon",
+				rings: [
+					[106.80196540898253, 10.874162215247198, 100],
+					[106.80470930344951, 10.874162202995688, 100],
+					[106.80470930344951, 10.874162202995689, 400],
+					[106.80196540898253, 10.874162215247199, 400],
+					[106.80196540898253, 10.874162215247198, 100]
+				],
+				symbol: {
+					type: "simple-fill", 
+					color: [227, 139, 79, 0.6],
+					outline: {
+						color: [255, 255, 255],
+						width: 1
+					}
+				}
+			},
+			{//left
+				type: "polygon",
+				rings: [
+					[106.80196540898, 10.874162215247198, 100],
+					[106.80196540898253, 10.874162215247198, 400],
+					[106.80196540898253, 10.876874353882926, 400],
+					[106.80196540898, 10.876874353882926, 100],
+					[106.80196540898, 10.874162215247198, 100]
+				],
+				symbol: {
+					type: "simple-fill", 
+					color: [227, 139, 79, 0.6],
+					outline: {
+						color: [255, 255, 255],
+						width: 1
+					}
+				}
+			}
+		]
+	}
+      require([
+        "esri/Map",
+        "esri/views/SceneView",
+        "esri/layers/GraphicsLayer",
+		"esri/Graphic"], function(
+        Map, SceneView, GraphicsLayer, Graphic
+      ) {
+
+        const map = new Map({
+          basemap: "topo-vector",
+          ground: "world-elevation"
+        });
+
+        const view = new SceneView({
+          container: "viewDiv",
+          map: map,
+          camera: {
+            position: [106.79896133488565, 10.84746232116585, 2073.31548],
+            heading: 10,
+            tilt: 60
+          }
+        });
+		var createGraphic = function (data) {
+			return new Graphic({
+				geometry: data,
+				symbol: data.symbol,
+				attributes: data,
+				popupTemplate: data.popupTemplate
+			});
+		}; 
+        var graphicsLayer = new GraphicsLayer();
+		
+		jsondata.points.forEach(function(data){
+			graphicsLayer.add(createGraphic(data));
+		});
+		jsondata.lines.forEach(function(data){
+		 	graphicsLayer.add(createGraphic(data));
+		});
+		jsondata.polygons.forEach(function(data){
+			graphicsLayer.add(createGraphic(data));
+		});
+        
+        map.add(graphicsLayer);
+      });
+    </script>
+  </head>
+
+  <body>
+    <div id="viewDiv"></div>
+  </body>
+</html>

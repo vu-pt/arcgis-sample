@@ -1,0 +1,146 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="initial-scale=1,maximum-scale=1,user-scalable=no" />
+    <title>Sketch in 3D | Sample | ArcGIS Maps SDK for JavaScript 4.29</title>
+
+    <link rel="stylesheet" href="https://js.arcgis.com/4.29/esri/themes/light/main.css" />
+    <script src="https://js.arcgis.com/4.29/"></script>
+
+    <style>
+      html,
+      body,
+      #viewDiv {
+        padding: 0;
+        margin: 0;
+        height: 100%;
+        width: 100%;
+        background-color: ghostwhite;
+      }
+    </style>
+    <script>
+      require([
+        "esri/Map",
+        "esri/views/SceneView",
+        "esri/views/3d/environment/SunLighting",
+        "esri/widgets/Sketch/SketchViewModel",
+        "esri/widgets/Sketch",
+        "esri/geometry/Extent",
+        "esri/layers/support/ImageElement",
+        "esri/layers/support/ExtentAndRotationGeoreference",
+        "esri/layers/MediaLayer",
+        "esri/layers/GraphicsLayer",
+        "esri/layers/ElevationLayer",
+        "esri/symbols/PolygonSymbol3D",
+        "esri/symbols/ExtrudeSymbol3DLayer",
+        "esri/symbols/edges/SolidEdges3D",
+        "esri/symbols/LineSymbol3D",
+        "esri/symbols/PathSymbol3DLayer",
+        "esri/symbols/PointSymbol3D",
+        "esri/symbols/ObjectSymbol3DLayer",
+        "esri/geometry/Polygon",
+        "esri/geometry/Polyline",
+        "esri/geometry/Point",
+        "esri/Graphic"
+      ], (
+        Map,
+        SceneView,
+        SunLighting,
+        SketchViewModel,
+        Sketch,
+        Extent,
+        ImageElement,
+        ExtentAndRotationGeoreference,
+        MediaLayer,
+        GraphicsLayer,
+        ElevationLayer,
+        PolygonSymbol3D,
+        ExtrudeSymbol3DLayer,
+        SolidEdges3D,
+        LineSymbol3D,
+        PathSymbol3DLayer,
+        PointSymbol3D,
+        ObjectSymbol3DLayer,
+        Polygon,
+        Polyline,
+        Point,
+        Graphic
+      ) => {
+        
+        /**********************************************
+         * Graphics layer to sketch on
+         *********************************************/
+        // The layer where the graphics are sketched
+        const sketchLayer = new GraphicsLayer({
+          elevationInfo: {
+            mode: "absolute-height"
+          },
+          title: "Sketched geometries"
+        });
+        
+        const map = new Map({
+                basemap: "topo-vector",
+                ground: "world-elevation",
+                layers: [sketchLayer] //end layers
+            });
+
+        const view = new SceneView({
+          container: "viewDiv",
+          map: map,
+          camera: {
+            position: [106.79852745678305, 10.866247282390896, 100],
+            heading: 0,
+            tilt: 75
+          }
+        });
+        /**********************************************
+         * Symbologies
+         *********************************************/
+        // Polygon symbol used for sketching the extruded building footprints
+        const buildingSymbology = new PolygonSymbol3D({
+          symbolLayers: [
+            new ExtrudeSymbol3DLayer({
+              size: 70, // extrude by 30m meters
+              material: {
+                color: [255, 255, 255, 0.8]
+              },
+              edges: new SolidEdges3D({
+                size: 1,
+                color: [82, 82, 122, 1]
+              })
+            })
+          ]
+        });
+        const buildingRings = [
+          [
+            [
+              [106.79780326034896, 10.870050922869547, 10],
+			  [106.79865083839778, 10.870230040477932, 10],
+			  [106.79886541511898, 10.869481960341382, 10],
+			  [106.79800710823412, 10.869255428662466, 10],
+			  [106.79780326034896, 10.870050922869547, 10]
+            ]
+          ]
+        ];
+        function addBuildings(allRings) {
+          allRings.forEach((ring) => {
+            const building = new Graphic({
+              geometry: new Polygon({
+                rings: ring
+              }),
+              symbol: buildingSymbology
+            });
+            sketchLayer.add(building);
+          });
+        }
+        addBuildings(buildingRings);
+
+      });
+    </script>
+  </head>
+
+  <body>
+    <div id="viewDiv"></div>
+  </body>
+</html>
